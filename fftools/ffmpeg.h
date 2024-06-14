@@ -723,6 +723,7 @@ DLL_EXPORT int ffmpeg_is_running(int id);
 DLL_EXPORT void ffmpeg_stop(int id);
 DLL_EXPORT void ffmpeg_force_stop(int id);
 DLL_EXPORT int ffmpeg_start(int argc, char **argv, int id, log_message_callback_t log_callback);
+DLL_EXPORT int ffmpeg_start_str(const char* oldP,int id,log_message_callback_t log_callback);
 
 
 #endif /* FFTOOLS_FFMPEG_H */

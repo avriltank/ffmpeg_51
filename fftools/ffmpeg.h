@@ -19,6 +19,12 @@
 #ifndef FFTOOLS_FFMPEG_H
 #define FFTOOLS_FFMPEG_H
 
+#ifdef _WIN32
+#define DLL_EXPORT __declspec(dllexport)
+#else
+#define DLL_EXPORT 
+#endif
+
 #include "config.h"
 
 #include <stdint.h>
@@ -709,5 +715,14 @@ void of_close(OutputFile **pof);
 
 void of_write_packet(OutputFile *of, AVPacket *pkt, OutputStream *ost,
                      int unqueue);
+                     
+typedef void (*log_message_callback_t)(int level, const char* msg);
+                     
+DLL_EXPORT int ffmpeg_is_running(int id);
+DLL_EXPORT int ffmpeg_is_running(int id);
+DLL_EXPORT void ffmpeg_stop(int id);
+DLL_EXPORT void ffmpeg_force_stop(int id);
+DLL_EXPORT int ffmpeg_start(int argc, char **argv, int id, log_message_callback_t log_callback);
+
 
 #endif /* FFTOOLS_FFMPEG_H */

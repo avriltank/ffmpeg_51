@@ -36,6 +36,42 @@
 #include "libavutil/thread.h"
 #include <string.h>
 
+DLL_EXPORT int ffplay_is_running(int id);
+DLL_EXPORT void ffplay_stop(int id);
+DLL_EXPORT void ffplay_set_filp_mode(int val);
+DLL_EXPORT int ffplay_get_audio_channels();
+DLL_EXPORT void ffplay_set_audio_channels(int val);
+DLL_EXPORT int ffplay_get_audio_sample_rate();
+DLL_EXPORT void ffplay_set_audio_sample_rate(int val);
+DLL_EXPORT void ffplay_set_audio_spec_size(int size);
+DLL_EXPORT void ffplay_set_audio_spec_size(int size);
+DLL_EXPORT int ffplay_start(int argc, char **argv, int id, const char *file_path);
+DLL_EXPORT int ffplay_get_audio(int id, float *stream, int len);
+DLL_EXPORT void ffplay_set_video_buffer(int id, uint8_t *buffer, int width, int height);
+DLL_EXPORT int ffplay_get_frame_width(int id);
+DLL_EXPORT int ffplay_get_frame_height(int id);
+DLL_EXPORT double ffplay_get_master_clock(int id);
+DLL_EXPORT int ffplay_toggle_pause(int id);
+DLL_EXPORT int ffplay_toggle_mute(int id);
+DLL_EXPORT int ffplay_stream_cycle_channel(int id, int codec_type);
+DLL_EXPORT int ffplay_step_to_next_frame(int id);
+DLL_EXPORT int ffplay_seek_incr_seconds(int id, double incr);
+DLL_EXPORT int ffplay_seek(int id, double pos);
+DLL_EXPORT int64_t ffplay_get_duration_base_time(int id);
+DLL_EXPORT double ffplay_get_duration(int id);
+DLL_EXPORT int ffplay_has_chapter(int id);
+DLL_EXPORT int ffplay_seek_chapter(int id, int incr);
+DLL_EXPORT int ffplay_set_loop(int id, int val);
+DLL_EXPORT int ffplay_get_paused(int id);
+DLL_EXPORT int ffplay_get_muted(int id);
+DLL_EXPORT int ffplay_get_loop(int id);
+DLL_EXPORT void ffplay_set_reset_audio(int val);
+DLL_EXPORT void ffplay_force_reset_audio(int id);
+DLL_EXPORT void ffplay_set_max_packets(int val);
+DLL_EXPORT void ffplay_call_event(int id);
+DLL_EXPORT int ffplay_has_video(int id);
+DLL_EXPORT int ffplay_has_audio(int id);
+
 #include "config.h"
 #include "config_components.h"
 #include <inttypes.h>
@@ -559,7 +595,7 @@ static void remove_is_pair(int id)
     g_is_pair_array_count--;
 }
 
-DLL_EXPORT int ffplay_is_running(int id)
+int ffplay_is_running(int id)
 {
     int ret = 0;
     if (g_running_ids_count > 0) {
@@ -589,7 +625,7 @@ DLL_EXPORT int ffplay_is_running(int id)
     return ret;
 }
 
-DLL_EXPORT void ffplay_stop(int id)
+void ffplay_stop(int id)
 {
     lock();
     add_to_array(&g_stop_ids, &g_stop_ids_count, id);
@@ -633,27 +669,27 @@ static void unity_ffplay_exit_in_running(int ret)
     pthread_exit(ret_ptr);
 }
 
-DLL_EXPORT void ffplay_set_filp_mode(int val) {
+void ffplay_set_filp_mode(int val) {
     unity_filp_mode = val;
 }
 
-DLL_EXPORT int ffplay_get_audio_channels() {
+int ffplay_get_audio_channels() {
     return unity_audio_channels;
 }
 
-DLL_EXPORT void ffplay_set_audio_channels(int val) {
+void ffplay_set_audio_channels(int val) {
     unity_audio_channels = val;
 }
 
-DLL_EXPORT int ffplay_get_audio_sample_rate() {
+int ffplay_get_audio_sample_rate() {
     return unity_audio_sample_rate;
 }
 
-DLL_EXPORT void ffplay_set_audio_sample_rate(int val) {
+void ffplay_set_audio_sample_rate(int val) {
     unity_audio_sample_rate = val;
 }
 
-DLL_EXPORT void ffplay_set_audio_spec_size(int size) {
+void ffplay_set_audio_spec_size(int size) {
     unity_audio_spec_size = size;
 }
 
@@ -4533,7 +4569,7 @@ fail:
     unlock();
 }
 
-DLL_EXPORT int ffplay_start(int argc, char **argv, int id, const char *file_path)
+int ffplay_start(int argc, char **argv, int id, const char *file_path)
 {
     init_lock();
 
@@ -4576,8 +4612,8 @@ DLL_EXPORT int ffplay_start(int argc, char **argv, int id, const char *file_path
     return ret;
 }
 
-//DLL_EXPORT int ffplay_get_audio(int id, short *stream, int len)
-DLL_EXPORT int ffplay_get_audio(int id, float *stream, int len)
+//int ffplay_get_audio(int id, short *stream, int len)
+int ffplay_get_audio(int id, float *stream, int len)
 {
     void *is = get_is(id);
     if (is != NULL) {
@@ -4587,7 +4623,7 @@ DLL_EXPORT int ffplay_get_audio(int id, float *stream, int len)
     return -1;
 }
 
-DLL_EXPORT void ffplay_set_video_buffer(int id, uint8_t *buffer, int width, int height)
+void ffplay_set_video_buffer(int id, uint8_t *buffer, int width, int height)
 {
     VideoState *is = get_is(id);
     if (is != NULL) {
@@ -4597,7 +4633,7 @@ DLL_EXPORT void ffplay_set_video_buffer(int id, uint8_t *buffer, int width, int 
     }
 }
 
-DLL_EXPORT int ffplay_get_frame_width(int id)
+int ffplay_get_frame_width(int id)
 {
     VideoState *is = get_is(id);
     if (is != NULL) {
@@ -4606,7 +4642,7 @@ DLL_EXPORT int ffplay_get_frame_width(int id)
     return -1;
 }
 
-DLL_EXPORT int ffplay_get_frame_height(int id)
+int ffplay_get_frame_height(int id)
 {
     VideoState *is = get_is(id);
     if (is != NULL) {
@@ -4615,7 +4651,7 @@ DLL_EXPORT int ffplay_get_frame_height(int id)
     return -1;
 }
 
-DLL_EXPORT double ffplay_get_master_clock(int id)
+double ffplay_get_master_clock(int id)
 {
     VideoState *is = get_is(id);
     if (is != NULL) {
@@ -4624,7 +4660,7 @@ DLL_EXPORT double ffplay_get_master_clock(int id)
     return -1.0;
 }
 
-DLL_EXPORT int ffplay_toggle_pause(int id)
+int ffplay_toggle_pause(int id)
 {
     VideoState *is = get_is(id);
     if (is != NULL) {
@@ -4634,7 +4670,7 @@ DLL_EXPORT int ffplay_toggle_pause(int id)
     return -1;
 }
 
-DLL_EXPORT int ffplay_toggle_mute(int id)
+int ffplay_toggle_mute(int id)
 {
     VideoState *is = get_is(id);
     if (is != NULL) {
@@ -4671,7 +4707,7 @@ DLL_EXPORT int ffplay_get_max_volume()
 }
 #endif
 
-DLL_EXPORT int ffplay_stream_cycle_channel(int id, int codec_type)
+int ffplay_stream_cycle_channel(int id, int codec_type)
 {
     VideoState *is = get_is(id);
     if (is != NULL) {
@@ -4681,7 +4717,7 @@ DLL_EXPORT int ffplay_stream_cycle_channel(int id, int codec_type)
     return -1;
 }
 
-DLL_EXPORT int ffplay_step_to_next_frame(int id)
+int ffplay_step_to_next_frame(int id)
 {
     VideoState *is = get_is(id);
     if (is != NULL) {
@@ -4720,7 +4756,7 @@ static void inner_ffplay_seek_incr_seconds(VideoState *cur_stream, double incr)
     }
 }
 
-DLL_EXPORT int ffplay_seek_incr_seconds(int id, double incr)
+int ffplay_seek_incr_seconds(int id, double incr)
 {
     VideoState *cur_stream = get_is(id);
 
@@ -4738,7 +4774,7 @@ DLL_EXPORT int ffplay_seek_incr_seconds(int id, double incr)
     return 0;
 }
 
-DLL_EXPORT int ffplay_seek(int id, double pos)
+int ffplay_seek(int id, double pos)
 {
     VideoState *cur_stream = get_is(id);
 
@@ -4766,7 +4802,7 @@ DLL_EXPORT int ffplay_seek(int id, double pos)
     return 0;
 }
 
-DLL_EXPORT int64_t ffplay_get_duration_base_time(int id)
+int64_t ffplay_get_duration_base_time(int id)
 {
     VideoState *is = get_is(id);
     if (is != NULL && is->ic != NULL) {
@@ -4775,7 +4811,7 @@ DLL_EXPORT int64_t ffplay_get_duration_base_time(int id)
     return -1;
 }
 
-DLL_EXPORT double ffplay_get_duration(int id)
+double ffplay_get_duration(int id)
 {
     VideoState *is = get_is(id);
     if (is != NULL && is->ic != NULL) {
@@ -4784,13 +4820,13 @@ DLL_EXPORT double ffplay_get_duration(int id)
     return -1.0;
 }
 
-DLL_EXPORT int ffplay_has_chapter(int id)
+int ffplay_has_chapter(int id)
 {
     VideoState *is = get_is(id);
     return (is != NULL && is->ic != NULL) ? (is->ic->nb_chapters <= 1) : 0;
 }
 
-DLL_EXPORT int ffplay_seek_chapter(int id, int incr)
+int ffplay_seek_chapter(int id, int incr)
 {
     VideoState *is = get_is(id);
     if (is != NULL && is->ic != NULL && is->ic->nb_chapters <= 1) {
@@ -4800,7 +4836,7 @@ DLL_EXPORT int ffplay_seek_chapter(int id, int incr)
     return -1;
 }
 
-DLL_EXPORT int ffplay_set_loop(int id, int val)
+int ffplay_set_loop(int id, int val)
 {
     VideoState *is = get_is(id);
     if (is != NULL) {
@@ -4810,7 +4846,7 @@ DLL_EXPORT int ffplay_set_loop(int id, int val)
     return -1;
 }
 
-DLL_EXPORT int ffplay_get_paused(int id)
+int ffplay_get_paused(int id)
 {
     VideoState *is = get_is(id);
     if (is != NULL) {
@@ -4819,7 +4855,7 @@ DLL_EXPORT int ffplay_get_paused(int id)
     return -1;
 }
 
-DLL_EXPORT int ffplay_get_muted(int id)
+int ffplay_get_muted(int id)
 {
     VideoState *is = get_is(id);
     if (is != NULL) {
@@ -4828,7 +4864,7 @@ DLL_EXPORT int ffplay_get_muted(int id)
     return -1;
 }
 
-DLL_EXPORT int ffplay_get_loop(int id)
+int ffplay_get_loop(int id)
 {
     VideoState *is = get_is(id);
     if (is != NULL) {
@@ -4837,12 +4873,12 @@ DLL_EXPORT int ffplay_get_loop(int id)
     return -1;
 }
 
-DLL_EXPORT void ffplay_set_reset_audio(int val)
+void ffplay_set_reset_audio(int val)
 {
     unity_reset_audio = val;
 }
 
-DLL_EXPORT void ffplay_force_reset_audio(int id)
+void ffplay_force_reset_audio(int id)
 {
     VideoState *is = get_is(id);
     if (is != NULL) {
@@ -4850,12 +4886,12 @@ DLL_EXPORT void ffplay_force_reset_audio(int id)
     }
 }
 
-DLL_EXPORT void ffplay_set_max_packets(int val)
+void ffplay_set_max_packets(int val)
 {
     unity_max_packets = val;
 }
 
-DLL_EXPORT void ffplay_call_event(int id)
+void ffplay_call_event(int id)
 {
     VideoState *is = get_is(id);
     if (is != NULL) {
@@ -4863,7 +4899,7 @@ DLL_EXPORT void ffplay_call_event(int id)
     }
 }
 
-DLL_EXPORT int ffplay_has_video(int id)
+int ffplay_has_video(int id)
 {
     VideoState *is = get_is(id);
     if (is != NULL) {
@@ -4877,7 +4913,7 @@ DLL_EXPORT int ffplay_has_video(int id)
     return -1;
 }
 
-DLL_EXPORT int ffplay_has_audio(int id)
+int ffplay_has_audio(int id)
 {
     VideoState *is = get_is(id);
     if (is != NULL) {

@@ -32,6 +32,10 @@
 #include "config.h"
 #include "libavutil/ffversion.h"
 
+DLL_EXPORT int ffprobe_main(int argc, char **argv, const char *file_path);
+DLL_EXPORT int ffprobe_main_str(const char* oldP, const char *file_path);
+
+
 #include <string.h>
 
 #include "libavformat/avformat.h"
@@ -4061,7 +4065,7 @@ static inline int check_section_show_entries(int section_id)
     } while (0)
 
 //int main(int argc, char **argv)
-DLL_EXPORT int ffprobe_main(int argc, char **argv, const char *file_path)
+int ffprobe_main(int argc, char **argv, const char *file_path)
 {
     const Writer *w;
     WriterContext *wctx;
@@ -4690,7 +4694,7 @@ static inline void rtrim_chenfa(char *pStr)
     }  
 }
 
-DLL_EXPORT int ffprobe_main_str(const char* oldP, const char *file_path)
+int ffprobe_main_str(const char* oldP, const char *file_path)
 {
     size_t oldLen = strlen(oldP);
     char* p_data = (char*)malloc(oldLen);

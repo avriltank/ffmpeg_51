@@ -23,12 +23,6 @@
  * multimedia converter based on the FFmpeg libraries
  */
 
-#ifdef _WIN32
-#define DLL_EXPORT __declspec(dllexport)
-#else
-#define DLL_EXPORT 
-#endif
-
 #include "config.h"
 #include <ctype.h>
 #include <string.h>
@@ -182,7 +176,7 @@ THREAD_LOCAL int main_return_code = 0;
 static THREAD_LOCAL int64_t copy_ts_first_pts = AV_NOPTS_VALUE;
 
 
-typedef void (*log_message_callback_t)(int level, const char* msg);
+
 static THREAD_LOCAL log_message_callback_t g_log_message_callback = NULL;
 //static THREAD_LOCAL int g_default_stderr_no = -1;
 /*static THREAD_LOCAL FILE *g_log_output_file_pointer = NULL;*/
@@ -238,7 +232,7 @@ static void remove_from_array(int *array, int *size, int val)
     *size -= del;
 }
 
-DLL_EXPORT int ffmpeg_is_running(int id)
+int ffmpeg_is_running(int id)
 {
     int ret = 0;
     if (g_running_ids_count > 0) {
@@ -255,14 +249,14 @@ DLL_EXPORT int ffmpeg_is_running(int id)
     return ret;
 }
 
-DLL_EXPORT void ffmpeg_stop(int id)
+void ffmpeg_stop(int id)
 {
     lock();
     add_to_array(&g_stop_ids, &g_stop_ids_count, id);
     unlock();
 }
 
-DLL_EXPORT void ffmpeg_force_stop(int id)
+void ffmpeg_force_stop(int id)
 {
     lock();
     add_to_array(&g_force_stop_ids, &g_force_stop_ids_count, id);
@@ -4809,7 +4803,7 @@ static void *ffmpeg_main_thread(void *main_args_void_ptr)
     return ret_ptr;
 }
 
-DLL_EXPORT int ffmpeg_start(int argc, char **argv, int id, log_message_callback_t log_callback)
+int ffmpeg_start(int argc, char **argv, int id, log_message_callback_t log_callback)
 {
     MainArgs *main_args = av_malloc(sizeof(MainArgs));
     main_args->argc = argc;
@@ -5280,7 +5274,7 @@ static inline void rtrim_chenfa(char *pStr)
     }  
 }
 
-DLL_EXPORT int ffmpeg_start_str(const char* oldP,int id,log_message_callback_t log_callback)
+int ffmpeg_start_str(const char* oldP,int id,log_message_callback_t log_callback)
 {
     size_t oldLen = strlen(oldP);
     char* p_data = (char*)malloc(oldLen);

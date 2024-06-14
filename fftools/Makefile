@@ -1,11 +1,11 @@
 AVPROGS-$(CONFIG_FFMPEG)   += ffmpeg
 
-AVPROGS-$(CONFIG_FFPROBE)  += ffprobe
+
 
 AVPROGS     := $(AVPROGS-yes:%=%$(PROGSSUF)$(EXESUF))
 PROGS       += $(AVPROGS)
 
-AVBASENAMES  = ffmpeg ffprobe
+AVBASENAMES  = ffmpeg
 ALLAVPROGS   = $(AVBASENAMES:%=%$(PROGSSUF)$(EXESUF))
 ALLAVPROGS_G = $(AVBASENAMES:%=%$(PROGSSUF)_g$(EXESUF))
 
@@ -15,8 +15,8 @@ OBJS-ffmpeg +=                  \
     fftools/ffmpeg_mux.o        \
     fftools/ffmpeg_opt.o        \
     fftools/test.o        \
+    fftools/ffprobe.o        \
     
-OBJS-ffprobe += fftools/test.o
 
 
 define DOFFTOOL

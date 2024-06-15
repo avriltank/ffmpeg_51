@@ -192,8 +192,8 @@ static const OptionDef *find_option(const OptionDef *po, const char *name)
 #if HAVE_COMMANDLINETOARGVW && defined(_WIN32)
 #include <shellapi.h>
 /* Will be leaked on exit */
-static char** win32_argv_utf8 = NULL;
-static int win32_argc = 0;
+//static char** win32_argv_utf8 = NULL;
+//static int win32_argc = 0;
 
 /**
  * Prepare command line arguments for executable.
@@ -204,6 +204,8 @@ static int win32_argc = 0;
  */
 static void prepare_app_arguments(int *argc_ptr, char ***argv_ptr)
 {
+    return;
+    /*
     char *argstr_flat;
     wchar_t **argv_w;
     int i, buffsize = 0, offset = 0;
@@ -219,7 +221,7 @@ static void prepare_app_arguments(int *argc_ptr, char ***argv_ptr)
     if (win32_argc <= 0 || !argv_w)
         return;
 
-    /* determine the UTF-8 buffer size (including NULL-termination symbols) */
+
     for (i = 0; i < win32_argc; i++)
         buffsize += WideCharToMultiByte(CP_UTF8, 0, argv_w[i], -1,
                                         NULL, 0, NULL, NULL);
@@ -242,6 +244,7 @@ static void prepare_app_arguments(int *argc_ptr, char ***argv_ptr)
 
     *argc_ptr = win32_argc;
     *argv_ptr = win32_argv_utf8;
+    */
 }
 #else
 static inline void prepare_app_arguments(int *argc_ptr, char ***argv_ptr)

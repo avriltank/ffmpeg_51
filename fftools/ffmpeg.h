@@ -719,7 +719,6 @@ void of_write_packet(OutputFile *of, AVPacket *pkt, OutputStream *ost,
 typedef void (*log_message_callback_t)(int level, const char* msg);
                      
 DLL_EXPORT int ffmpeg_is_running(int id);
-DLL_EXPORT int ffmpeg_is_running(int id);
 DLL_EXPORT void ffmpeg_stop(int id);
 DLL_EXPORT void ffmpeg_force_stop(int id);
 DLL_EXPORT int ffmpeg_start(int argc, char **argv, int id, log_message_callback_t log_callback);

@@ -4671,8 +4671,8 @@ static void log_callback_myfile(void *ptr, int level, const char *fmt, va_list v
         level &= 0xff;
     }
 
-    if (level > AV_LOG_INFO)
-        return;
+    //if (level > AV_LOG_INFO)
+        //return;
     
     // First, try to print to a small buffer
     char stack_buffer[1024];

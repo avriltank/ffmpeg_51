@@ -5289,7 +5289,7 @@ int ffmpeg_start_str(const char* oldP,int id,log_message_callback_t log_callback
     new_argv = CommandLineToArgvA_wine(p_data, &arg_count);
     
     arg_count = arg_count + 1;
-    char **new_argv_out = (char*)malloc(arg_count*sizeof(char*)); 
+    char **new_argv_out = (char**)malloc(arg_count*sizeof(char*)); 
     for(int i=0;i<arg_count;i++)
     {
         if(i==0)

@@ -301,7 +301,9 @@ static void write_metadata(AVFormatContext *s, unsigned int ts)
     if (write_duration_filesize) {
         metadata_count += 2; // +2 for duration and file size
     }
+    metadata_count+=6;
     avio_wb32(pb, metadata_count);
+
     put_amf_string(pb, "Encoder");
     put_amf_byte(pb, AMF_DATA_TYPE_STRING);
     put_amf_string(pb,"bytedmediasdkandroid:12/a68VGfnAMMxugS/wdQr3QPwaU9wB0462isEcnH1nkp15SmA9X+TPnPQTjZNMBqV+1x2g9OZ7ly44A64ig6acCCTzmfllGLce57RNCBvxHJ8nvogSrTG0SYzlU8AP0M/uXTdJGJG5oYwadZg==\n");
@@ -311,6 +313,15 @@ static void write_metadata(AVFormatContext *s, unsigned int ts)
     put_amf_string(pb, "model");
     put_amf_byte(pb, AMF_DATA_TYPE_STRING);
     put_amf_string(pb, "SAMSUNG S23");
+    put_amf_string(pb, "sdk_version");
+    put_amf_byte(pb, AMF_DATA_TYPE_STRING);
+    put_amf_string(pb, "12.6.0.10-mt");
+    put_amf_string(pb, "os_version");
+    put_amf_byte(pb, AMF_DATA_TYPE_STRING);
+    put_amf_string(pb, "16.0.2");
+    put_amf_string(pb, "qId");
+    put_amf_byte(pb, AMF_DATA_TYPE_STRING);
+    put_amf_string(pb, "ios_conservative_dynamic_fps");
 
     if (write_duration_filesize) {
         put_amf_string(pb, "duration");
